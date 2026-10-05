@@ -7,6 +7,7 @@ from discord import app_commands
 
 TOKEN = os.environ["DISCORD_TOKEN"]
 DATA_FILE = "stats_channels.json"  # {guild_id: channel_id}
+NOM_SALON = "Membre: {count}"  # format du nom du salon
 MIN_INTERVAL = 300  # secondes entre 2 renommages (limite Discord : 2 / 10 min)
 
 intents = discord.Intents.default()
@@ -45,7 +46,7 @@ class Bot(discord.Client):
         channel = guild.get_channel(channel_id)
         if channel is None:
             return
-        nouveau_nom = f"Membres : {guild.member_count}"
+        nouveau_nom = NOM_SALON.format(count=guild.member_count)
         if channel.name == nouveau_nom:
             return
         await channel.edit(name=nouveau_nom, reason="Mise à jour du nombre de membres")
